@@ -56,20 +56,17 @@
 
 
 <script src="/client/scene/collision.js"></script>
-<script src="/client/partner.js"></script>
 <script src="/client/scene/game.js"></script>
 
 
 <script>
     var sockett = io('/setup');
-//    var playing = io('/playing');
     var alreadyPlaying = false;
     var $username = $('#nick_name');
     var $spinner = $('#spinner');
     $(function () {
         var $joiningForm = $("#joiningForm");
         var $connectedPartnerArea = $('#connectedPartnerArea');
-
 
 
         //looking for partner
@@ -100,7 +97,6 @@
         console.log('Connected to: ', data);
 
         var game = new Pong(data, sockett);
-        game.setCurrentPlayer(data, $username.val());
         game.setCurrentPlayerTextSettings(data);
         game.setOpponentPlayerTextSettings(data);
         game.renderScene();
