@@ -1,0 +1,18 @@
+{
+  "name": "Pong",
+  "version": "0.0.1",
+  "email": "tmatate.act@gmail.com",
+  "description": "Barebones Pong Game made at the Pepper Berlin Hackday",
+  "url": "http://team-matate.com",
+  "dependencies": {
+    "jQuery": "^1.7.4",
+    "socket.io": "^1.4.8",
+    "three": "^0.79.0",
+    "three-text2d": "^0.2.2",
+    "threex": "^1.0.0",
+    "underscore": "^1.8.3",
+    "winston": "^2.2.0"
+  },
+  "author": "Tinashe Matate",
+  "license": "MIT"
+}

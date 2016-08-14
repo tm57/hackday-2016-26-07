@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pong!!!</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="/node_modules/socket.io-client/socket.io.js"></script>
+    <script src="/node_modules/three/build/three.min.js"></script>
+    <script src="/node_modules/three-text2d/dist/three-text2d.js"></script>
+    <script src="/node_modules/threex/tmp/threex-v0/THREEx.KeyboardState.js"></script>
+
+    <style>
+        body {
+            margin-top: 30px;
+            /*background: #000000;*/
+        }
+
+        #gamingArea {
+            display: none;
+        }
+
+        .spinner {
+            display: none;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #00A000;
+            text-align: center;
+        }
+    </style>
+</head>
+
+
+<body>
+<div class="container">
+    <div id="gamingArea"></div>
+    <div class="spinner" id="spinner">
+        <h3>Looking for opponent</h3>
+    </div>
+    <div class="jumbotron" id="connectedPartnerArea">
+        <div class="container">
+            <form id="joiningForm" role="form">
+                <div class="form-group">
+                    <input class="form-control" type="text" id="nick_name" placeholder="Nickname">
+                </div>
+                <input type="submit" id='find_partner' class="btn btn-primary" value="Find Opponent">
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script src="/client/scene/collision.js"></script>
+<script src="/client/partner.js"></script>
+<script src="/client/scene/game.js"></script>
+
+
+<script>
+    var sockett = io('/setup');
+//    var playing = io('/playing');
+    var alreadyPlaying = false;
+    var $username = $('#nick_name');
+    var $spinner = $('#spinner');
+    $(function () {
+        var $joiningForm = $("#joiningForm");
+        var $connectedPartnerArea = $('#connectedPartnerArea');
+
+
+
+        //looking for partner
+        $joiningForm.submit(function (e) {
+            e.preventDefault();
+            console.log($username.val());
+            sockett.emit('looking_for_partner', {username: $username.val(), foundPartner: false});
+            me = $username.val();
+            $('#connected_partner_name_jumbotron').hide();
+            $spinner.show();
+            $connectedPartnerArea.hide();
+        });
+    });
+
+    var GlobalX = 2;
+    var GlobalY = 3;
+
+    sockett.on('ballPosition', function (data) {
+
+
+        if (alreadyPlaying === true) {
+            console.log('Find another opponent $#2§**^%%$');
+            return;
+        }
+
+        alreadyPlaying = true;
+        $spinner.hide();
+        console.log('Connected to: ', data);
+
+        var game = new Pong(data, sockett);
+        game.setCurrentPlayer(data, $username.val());
+        game.setCurrentPlayerTextSettings(data);
+        game.setOpponentPlayerTextSettings(data);
+        game.renderScene();
+    });
+
+
+</script>
+
+</body>
+</html>
