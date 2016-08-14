@@ -9,7 +9,7 @@ var Log = function () {
 	this.logger = new winston.Logger({
 		transports: [
 			new (winston.transports.Console)(),
-			new (winston.transports.File)({filename: './server/app/storage/logs/game-stats.log'})
+			new (winston.transports.File)({filename: './server/app/storage/app-logs/game-stats.log'})
 		]
 	});
 };
